@@ -13,6 +13,7 @@ namespace WinFormsApp1
             InitializeComponent();
         }
 
+
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -32,12 +33,19 @@ namespace WinFormsApp1
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             string json = File.ReadAllText("data.json");
-
             var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+
+            string userName = textBoxLogin.Text; 
+
+
+
 
             if (dict.ContainsKey(textBoxLogin.Text) && dict[textBoxLogin.Text].ToString() == textBoxPassword.Text)
             {
-                //переход на другую страницу
+                Form3 form3 = new Form3(userName);
+                form3.ShowDialog();
+                this.Close();
             }
             else
             {
