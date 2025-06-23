@@ -5,8 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static WinFormsApp1.Form3;
+using static WinFormsApp1.Form4;
 
 namespace WinFormsApp1
 {
@@ -15,6 +18,17 @@ namespace WinFormsApp1
         public UserControl1()
         {
             InitializeComponent();
+
+
         }
+
+        public void SetData(string userName, Game game)
+        {
+            labelName.Text = $"Игра: {userName}";
+            labelCreate.Text = $"Создатель: {game.Opis}";
+            labelCost.Text = $"Цена: {game.Cost}";
+        }
+
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
+using static WinFormsApp1.Form4;
 
 namespace WinFormsApp1
 {
@@ -12,6 +13,7 @@ namespace WinFormsApp1
         public Form3(string s)
         {
             InitializeComponent();
+            
             f = s;
 
             string path = "pols.json";
@@ -67,8 +69,13 @@ namespace WinFormsApp1
 
             string newJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
             File.WriteAllText(path, newJson);
-
+            this.Load += Form3_Load;
         }
+
+
+
+
+
         public class Admin
         {
             public int Balans { get; set; }
@@ -99,21 +106,128 @@ namespace WinFormsApp1
 
             if (users.ContainsKey(f))
             {
-                // Пополняем баланс
+
                 users[f].Balans += Convert.ToInt32(textBoxBalans2.Text);
                 labelBalans.Text = users[f].Balans.ToString();
 
-                // Добавляем игру, если ещё нет
+
                 if (!users[f].Game.Contains(newGame))
                 {
                     users[f].Game.Add(newGame);
                 }
 
-                // Сохраняем обратно
+
                 string updatedJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(path, updatedJson);
 
             }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Form4 form4 = new Form4();
+            form4.ShowDialog();
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+
+
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+            string pathUsers = "pols.json";
+            string pathGames = "game.json";
+
+            if (!File.Exists(pathUsers) || !File.Exists(pathGames))
+            {
+                MessageBox.Show("Файлы пользователей или игр не найдены.");
+                return;
+            }
+
+
+            string jsonUsers = File.ReadAllText(pathUsers);
+            var users = JsonSerializer.Deserialize<Dictionary<string, Admin>>(jsonUsers);
+
+            string jsonGames = File.ReadAllText(pathGames);
+            var games = JsonSerializer.Deserialize<Dictionary<string, Game>>(jsonGames);
+
+            string currentUser = labelLogin.Text.Trim();
+
+            if (users != null && users.ContainsKey(currentUser))
+            {
+                Admin admin = users[currentUser];
+                flowLayoutPanel1.Controls.Clear();
+
+                foreach (string gameName in admin.Game)
+                {
+                    
+                    if (games.ContainsKey(gameName))
+                    {
+                        Game game = games[gameName];
+                        var card = new UserControl1();
+                        card.SetData(gameName, game);
+                        flowLayoutPanel1.Controls.Add(card);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пользователь не найден.");
+            }
+        }
+
+        private void buttonBuyGame_Click(object sender, EventArgs e)
+        {
+            string pathUsers = "pols.json";
+            string pathGames = "game.json";
+            string jsonUsers = File.ReadAllText(pathUsers);
+            var users = JsonSerializer.Deserialize<Dictionary<string, Admin>>(jsonUsers);
+            string jsonGames = File.ReadAllText(pathGames);
+            var games = JsonSerializer.Deserialize<Dictionary<string, Game>>(jsonGames);
+            string currentUser = labelLogin.Text.Trim();
+
+
+            if (textBoxGame.Text!="" && games.ContainsKey(textBoxGame.Text) && Convert.ToInt32(labelBalans.Text) > games[textBoxGame.Text].Cost)
+            {
+                Admin admin = users[currentUser];
+                users[currentUser].Game.Add(textBoxGame.Text);
+                labelBalans.Text = (Convert.ToInt32(labelBalans.Text) - Convert.ToInt32(games[textBoxGame.Text].Cost)).ToString();
+            }
+            else
+            {
+                MessageBox.Show("нету денег или неправильная игра");
+            }
+
+            if (users != null && users.ContainsKey(currentUser))
+            {
+                Admin admin = users[currentUser];
+                flowLayoutPanel1.Controls.Clear();
+
+                foreach (string gameName in admin.Game)
+                {
+
+                    if (games.ContainsKey(gameName))
+                    {
+                        Game game = games[gameName];
+                        var card = new UserControl1();
+                        card.SetData(gameName, game);
+                        flowLayoutPanel1.Controls.Add(card);
+                    }
+                }
+            }
+
+
+
+            string newJson = JsonSerializer.Serialize(users, new JsonSerializerOptions { WriteIndented = true });
+            string newJson2 = JsonSerializer.Serialize(games, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(pathUsers, newJson);
+            File.WriteAllText(pathGames, newJson2);
+
         }
     }
 }

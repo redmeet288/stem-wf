@@ -28,6 +28,7 @@ namespace WinFormsApp1
         {
             Form2 form2 = new Form2();
             form2.ShowDialog();
+
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)

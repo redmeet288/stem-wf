@@ -33,6 +33,9 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             buttonPlus = new Button();
             textBoxBalans2 = new TextBox();
+            button1 = new Button();
+            buttonBuyGame = new Button();
+            textBoxGame = new TextBox();
             SuspendLayout();
             // 
             // labelLogin
@@ -55,10 +58,12 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.Location = new Point(0, 162);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(813, 417);
             flowLayoutPanel1.TabIndex = 2;
+            flowLayoutPanel1.Paint += flowLayoutPanel1_Paint;
             // 
             // buttonPlus
             // 
@@ -77,11 +82,41 @@
             textBoxBalans2.Size = new Size(100, 23);
             textBoxBalans2.TabIndex = 4;
             // 
+            // button1
+            // 
+            button1.Location = new Point(41, 40);
+            button1.Name = "button1";
+            button1.Size = new Size(132, 27);
+            button1.TabIndex = 5;
+            button1.Text = "Магазан";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
+            // 
+            // buttonBuyGame
+            // 
+            buttonBuyGame.Location = new Point(332, 115);
+            buttonBuyGame.Name = "buttonBuyGame";
+            buttonBuyGame.Size = new Size(100, 23);
+            buttonBuyGame.TabIndex = 6;
+            buttonBuyGame.Text = "Купить игру";
+            buttonBuyGame.UseVisualStyleBackColor = true;
+            buttonBuyGame.Click += buttonBuyGame_Click;
+            // 
+            // textBoxGame
+            // 
+            textBoxGame.Location = new Point(332, 76);
+            textBoxGame.Name = "textBoxGame";
+            textBoxGame.Size = new Size(100, 23);
+            textBoxGame.TabIndex = 7;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(812, 580);
+            Controls.Add(textBoxGame);
+            Controls.Add(buttonBuyGame);
+            Controls.Add(button1);
             Controls.Add(textBoxBalans2);
             Controls.Add(buttonPlus);
             Controls.Add(flowLayoutPanel1);
@@ -100,5 +135,8 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private Button buttonPlus;
         private TextBox textBoxBalans2;
+        private Button button1;
+        private Button buttonBuyGame;
+        private TextBox textBoxGame;
     }
 }
